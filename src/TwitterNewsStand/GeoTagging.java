@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Vector;
 
 /*
@@ -196,61 +197,61 @@ public class GeoTagging {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, ParseException, Exception {
-//
-//        //Load Data
-//        String inputFileName = "C:\\Users\\mresl_000\\Documents\\NetBeans"
-//                + "Projects\\DataBaseTwitter\\Statistics\\ArabicNew"
-//                + "sProviders\\All_ArabicNewsProviders_2.9.xml";
-//        ArrayList<Tweet> tweets = new Cleaner().readAndCleanData(inputFileName);
-//
-//        //Create Tagger
-//        GeoTagging myGeoTagger = new GeoTagging();
-//
-//        //Loop
-//        Random generator = new Random();
-//        int falseCounter = 0;
-//        int trueCounter = 0;
-//        for (int i = 0; i < 10000; i++) {
-////            int rand = generator.nextInt(tweets.size());
-////            System.out.println(i);
-//
-//            //GeoTagging
-//            Tweet currT = tweets.get(i);
-//            //Sports
-////            if (!currT.getAccountName().equals("Yallakora") && !currT.getAccountName().equals("AljazeeraSports")) {
-////                continue;
-////            }
-//            //politics
+
+        //Load Data
+        String inputFileName = "C:\\Users\\mresl_000\\Documents\\NetBeans"
+                + "Projects\\DataBaseTwitter\\Statistics\\ArabicNew"
+                + "sProviders\\All_ArabicNewsProviders_2.9.xml";
+        ArrayList<Tweet> tweets = new FileCleaner().readAndCleanData(inputFileName);
+
+        //Create Tagger
+        GeoTagging myGeoTagger = new GeoTagging();
+
+        //Loop
+        Random generator = new Random();
+        int falseCounter = 0;
+        int trueCounter = 0;
+        for (int i = 0; i < 10000; i++) {
+            int rand = generator.nextInt(tweets.size());
+            System.out.println(i);
+
+            //GeoTagging
+            Tweet currT = tweets.get(i);
+            //Sports
+            if (!currT.getAccountName().equals("Yallakora") && !currT.getAccountName().equals("AljazeeraSports")) {
+                continue;
+            }
+            //politics
 //            if (!currT.getAccountName().equals("Masrawy")) {
 //                continue;
 //            }
-////            String category = "politics.txt";
-//            String category = "sports.txt";
-//            HashSet<String> results = myGeoTagger.geoTagTweet(currT, category);
-//            if (results.size() == 0) {
-//                falseCounter++;
-//            } else {
-//                trueCounter++;
+//            String category = "politics.txt";
+            String category = "sports.txt";
+            HashSet<String> results = myGeoTagger.geoTagTweet(currT, category);
+            if (results.size() == 0) {
+                falseCounter++;
+            } else {
+                trueCounter++;
+            }
+            //log results
+            myGeoTagger.getOutLog().append("***********************Final Results***************\n");
+//            ArrayList<GeoTagSorter> sorterList = new ArrayList<>();
+//            for (Map.Entry entry : results.entrySet()) {
+//                sorterList.add(new GeoTagSorter(((GeoTagLabel) entry.getKey()).word,
+//                        ((GeoTagLabel) entry.getKey()).label, (int) entry.getValue()));
 //            }
-//            //log results
-//            myGeoTagger.getOutLog().append("***********************Final Results***************\n");
-////            ArrayList<GeoTagSorter> sorterList = new ArrayList<>();
-////            for (Map.Entry entry : results.entrySet()) {
-////                sorterList.add(new GeoTagSorter(((GeoTagLabel) entry.getKey()).word,
-////                        ((GeoTagLabel) entry.getKey()).label, (int) entry.getValue()));
-////            }
-////            Collections.sort(sorterList, new GeoTagSorterComparator());
-////            for (GeoTagSorter e : sorterList) {
-////                myGeoTagger.getOutLog().append((e.label == 1 ? "GOLD" : "SILVER") + " : "
-////                        + (e).word + " : " + e.count + "\n");
-////            }
-//            myGeoTagger.getOutLog().append("====================END OF TWEET============================\n");
-//
-//        }//END of for loop
-//        System.out.println("NotGeoTagged" + falseCounter);
-//        System.out.println("GeoTagged" + trueCounter);
-//        myGeoTagger.getOutLog().close();
-//
+//            Collections.sort(sorterList, new GeoTagSorterComparator());
+//            for (GeoTagSorter e : sorterList) {
+//                myGeoTagger.getOutLog().append((e.label == 1 ? "GOLD" : "SILVER") + " : "
+//                        + (e).word + " : " + e.count + "\n");
+//            }
+            myGeoTagger.getOutLog().append("====================END OF TWEET============================\n");
+
+        }//END of for loop
+        System.out.println("NotGeoTagged" + falseCounter);
+        System.out.println("GeoTagged" + trueCounter);
+        myGeoTagger.getOutLog().close();
+
 //
 //        //logging the important structures
 //        PriorityQueue<UserData> pqStructures = getTopFive(structureCount);
@@ -266,7 +267,7 @@ public class GeoTagging {
 //            System.out.println("->" + e.getKey() + " : " + e.getValue().peek().userName + " count : " + e.getValue().peek().count);
 //        }
 //        System.out.println("BronzeMapSize" + myGeoTagger.BronzeMap.size());
-//
+
     }
 
     public BufferedWriter getOutLog() {
@@ -609,36 +610,7 @@ public class GeoTagging {
         return ret2.trim();
     }
 
-//    public static String getWikiArticle(String query, User user, String tahweel) {
-//        StringBuilder sb = new StringBuilder("");
-//        String[] listOfTitleStrings = {query};
-//        List<Page> listOfPages = user.queryContent(listOfTitleStrings);
-//
-//        for (Page page : listOfPages) {
-//
-//            MyWikiModel wikiModel = new MyWikiModel("${image}", "${title}");
-//            String currentContent = page.getCurrentContent();
-//
-//            if (currentContent.startsWith("#" + tahweel)) {
-//                String newq = "";
-//                int rIndex = currentContent.indexOf(tahweel);
-//                while (currentContent.charAt(rIndex) != '[' && rIndex < currentContent.length()) {
-//                    rIndex++;
-//                }
-//                rIndex += 2;
-//                while (currentContent.charAt(rIndex) != ']' && rIndex < currentContent.length()) {
-//                    newq += currentContent.charAt(rIndex);
-//                    rIndex++;
-//                }
-//                System.out.println("Redirection from: " + query + " to: " + newq);
-//                return getWikiArticle(newq, user, tahweel);
-//            }
-//            String html = wikiModel.render(new MyHtmlConverter(true, true), currentContent);
-//            sb.append(html + "\n");
-//        }
-//
-//        return query + "," + sb.toString();
-//    }
+
     private static String saveArticle(String newQuery, String article) throws IOException {
         BufferedWriter out = new BufferedWriter(new FileWriter(new File("C:\\Users\\mresl_000\\Documents\\NetBeans"
                 + "Projects\\DataBaseTwitter\\Statistics\\POS\\Wiki\\" + newQuery + ".txt")));
@@ -1372,7 +1344,12 @@ public class GeoTagging {
             return 0;
         }
     }
-//    public static class BronzeStructure implements Comparator<BronzeStructure> {
+    public static class BronzeStructure implements Comparator<BronzeStructure> {
+
+        @Override
+        public int compare(BronzeStructure o1, BronzeStructure o2) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
 //
 //
 //        private int count;
@@ -1394,7 +1371,7 @@ public class GeoTagging {
 //                return 0;
 //            }
 //        }
-//    }
+   }
 
     public class DatabaseResult {
 
@@ -1426,4 +1403,35 @@ public class GeoTagging {
             return weight;
         }
     }
+    
+    //    public static String getWikiArticle(String query, User user, String tahweel) {
+//        StringBuilder sb = new StringBuilder("");
+//        String[] listOfTitleStrings = {query};
+//        List<Page> listOfPages = user.queryContent(listOfTitleStrings);
+//
+//        for (Page page : listOfPages) {
+//
+//            MyWikiModel wikiModel = new MyWikiModel("${image}", "${title}");
+//            String currentContent = page.getCurrentContent();
+//
+//            if (currentContent.startsWith("#" + tahweel)) {
+//                String newq = "";
+//                int rIndex = currentContent.indexOf(tahweel);
+//                while (currentContent.charAt(rIndex) != '[' && rIndex < currentContent.length()) {
+//                    rIndex++;
+//                }
+//                rIndex += 2;
+//                while (currentContent.charAt(rIndex) != ']' && rIndex < currentContent.length()) {
+//                    newq += currentContent.charAt(rIndex);
+//                    rIndex++;
+//                }
+//                System.out.println("Redirection from: " + query + " to: " + newq);
+//                return getWikiArticle(newq, user, tahweel);
+//            }
+//            String html = wikiModel.render(new MyHtmlConverter(true, true), currentContent);
+//            sb.append(html + "\n");
+//        }
+//
+//        return query + "," + sb.toString();
+//    }
 }
