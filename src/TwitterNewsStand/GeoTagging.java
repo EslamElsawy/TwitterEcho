@@ -198,6 +198,7 @@ public class GeoTagging {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, ParseException, Exception {
 
+        
         //Load Data
         String inputFileName = "C:\\Users\\mresl_000\\Documents\\NetBeans"
                 + "Projects\\DataBaseTwitter\\Statistics\\ArabicNew"
